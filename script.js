@@ -17,6 +17,8 @@ function divide(a , b){
 let firstNum;
 let operator;
 let secondNum;
+let firstArr = [];
+let secondArr = [];
 
 function operate(firstNum, operator, secondNum){
     switch (operator){
@@ -32,3 +34,15 @@ function operate(firstNum, operator, secondNum){
             throw new Error("Invalid operator");
     }
 }
+
+document.addEventListener("DOMContentLoaded", () => {
+    const display = document.querySelector(".display");
+    const buttons = document.querySelectorAll(".btn");
+
+    buttons.forEach(button => {
+        button.addEventListener("click", function() {
+            const buttonText = this.textContent;
+            display.textContent += buttonText;
+        });
+    });
+});
