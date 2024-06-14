@@ -1,3 +1,12 @@
+let firstNum;
+let operator;
+let secondNum;
+let firstArr = [];
+let secondArr = [];
+let isFirst = true;
+let numCount = 0;
+let isEqualPressed = false;
+
 function add(a, b){
     return +a + +b;
 }
@@ -19,17 +28,10 @@ function divide(a , b){
     }
 }
 
-let firstNum;
-let operator;
-let secondNum;
-let firstArr = [];
-let secondArr = [];
-let isFirst = true;
-let numCount = 0;
-let isEqualPressed = false;
+function operate(firstArr, operator, secondArr){
+    firstNum = parseFloat(firstArr.join(""));
+    secondNum =  parseFloat(secondArr.join(""));
 
-
-function operate(firstNum, operator, secondNum){
     switch (operator){
         case "+":
             return add(firstNum, secondNum);
@@ -79,11 +81,48 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     });
 
+    // opButtons.forEach(button => {
+    //     button.addEventListener("click", function() {
+    //         isFirst = false;
+    //         numCount = 0;
+    //         operator = this.textContent;
+    //         isEqualPressed = true;
+    //     });
+    // });
+
     opButtons.forEach(button => {
         button.addEventListener("click", function() {
+            if (firstArr.length > 0 && secondArr.length > 0) {
+                // Calculate the result
+                const result = operate(firstArr, operator, secondArr);
+    
+                // Update the display and reset variables
+                if (result === "Bruh") {
+                    display.textContent = result;
+                    firstArr = ["Nan"];
+                } else {
+                    // Round the result to 10 decimal places
+                    const roundedResult = Number(result.toFixed(10));
+    
+                    // Convert to string and limit to 10 characters
+                    let resultString = roundedResult.toString();
+                    if (resultString.length > 10) {
+                        resultString = resultString.slice(0, 10);
+                    }
+                    display.textContent = resultString;
+                    firstArr = Array.from(resultString);
+                }
+    
+                secondArr = [];
+                isFirst = true;
+                numCount = 0;
+                isEqualPressed = true;
+            }
+    
+            // Set the new operator
             isFirst = false;
             numCount = 0;
-            operator = this.textContent;
+            operator = this.textContent;// === '×' ? '×' : this.textContent === '÷' ? '÷' : this.textContent;
             isEqualPressed = true;
         });
     });
@@ -94,7 +133,6 @@ document.addEventListener("DOMContentLoaded", () => {
         isFirst = true;
         numCount = 0;
         display.textContent = "";
-        //console.clear();
     });
 
     equalButton.addEventListener("click", function(){
@@ -102,11 +140,8 @@ document.addEventListener("DOMContentLoaded", () => {
         if (firstArr.length === 0 || secondArr.length === 0) {
             return; // Exit the function if either array is empty
         }
-
-        firstNum = parseFloat(firstArr.join(""));
-        secondNum =  parseFloat(secondArr.join(""));
         
-        const result = operate(firstNum, operator, secondNum);
+        const result = operate(firstArr, operator, secondArr);
         
         if (result === "Bruh") {
             display.textContent = result;
@@ -129,7 +164,6 @@ document.addEventListener("DOMContentLoaded", () => {
         isFirst = true;
         numCount = 0;
         isEqualPressed = true;
-        //console.clear();
     });
 
 });
